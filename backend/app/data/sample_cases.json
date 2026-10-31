@@ -1,0 +1,262 @@
+[
+  {
+    "id": "CASE-101",
+    "name": "Main St & 4th Ave Intersection Collision",
+    "title": "Main St & 4th Ave Intersection Collision",
+    "date": "Oct 28, 2026 - 14:02 UTC",
+    "address": "Junction of Main St & 4th Ave, Downtown Metro",
+    "location": "Junction of Main St & 4th Ave, Downtown Metro",
+    "officer": "Det. Marcus Vance",
+    "department": "Traffic Accident Investigation Bureau",
+    "status": "Flagged Contradiction",
+    "overallConfidence": 91,
+    "confidence": 91,
+    "summary": {
+      "executive": "At approximately 14:02:11 UTC, Vehicle A (Red Sedan) traveling westbound entered the 4-way signalized intersection at approximately 48 km/h. Concurrently, Vehicle B (Sport Motorcycle) traveling southbound entered the intersection against a transitional yellow/red signal at 36 km/h. Vehicle A applied emergency braking 0.7s prior to impact. The resulting lateral collision occurred in the northwest quadrant of the intersection. Witness statement EV-002 alleging Vehicle A ran a red light was disproven by Dashcam EV-001 ground truth footage.",
+      "observations": [
+        "Vehicle A front dashcam recorded active solid green signal at timestamp 14:02:09.8 (EV-001).",
+        "Vehicle A telemetry recorded brake line pressure spike from 0 bar to 85 bar at 14:02:10.5 (EV-003).",
+        "Impact registered at 14:02:11.4 with peak lateral acceleration of 6.8G (EV-003)."
+      ],
+      "inferences": [
+        "Vehicle B motorcycle rider reaction latency estimated at 1.2 seconds with counter-steer initiation (Confidence: 89%).",
+        "Vehicle A pre-impact velocity estimated at 48.2 km/h ± 1.5 km/h using video optical flow (Confidence: 94%)."
+      ],
+      "providerUsed": "Groq (openai/gpt-oss-120b)"
+    },
+    "evidenceCounts": {
+      "video": 1,
+      "audio": 1,
+      "sensor": 1,
+      "text": 1
+    },
+    "records": [
+      {
+        "id": "EV-001",
+        "caseId": "CASE-101",
+        "type": "VIDEO",
+        "sourceName": "Dashcam Vehicle A (BlackVue 4K)",
+        "timestampRecorded": "2026-10-28T14:02:00Z",
+        "fileUrl": "/sample_evidence/dashcam_vehicle_a.mp4",
+        "extractedObservations": [
+          { "timestampSec": 0.0, "observation": "Vehicle A cruising at steady pace in westbound lane.", "confidence": 99, "isGroundTruth": true },
+          { "timestampSec": 1.4, "observation": "Traffic light clearly visible: SOLID GREEN.", "confidence": 98, "isGroundTruth": true },
+          { "timestampSec": 2.1, "observation": "Vehicle B (Sport Motorcycle) enters peripheral view from right heading South.", "confidence": 95, "isGroundTruth": true },
+          { "timestampSec": 2.8, "observation": "Impact occurred at intersection center.", "confidence": 99, "isGroundTruth": true }
+        ]
+      },
+      {
+        "id": "EV-002",
+        "caseId": "CASE-101",
+        "type": "AUDIO",
+        "sourceName": "Pedestrian Witness Audio Statement",
+        "timestampRecorded": "2026-10-28T14:06:15Z",
+        "fileUrl": "/sample_evidence/witness_audio_01.mp3",
+        "transcriptOrExtractedText": "I was standing right outside the coffee shop at the corner. The red car was flying down Main Street. I am pretty sure the red car had a red light and just blasted through without even trying to stop.",
+        "extractedObservations": [
+          { "timestampSec": 1.5, "observation": "Witness claims Vehicle A (Red car) violated red light.", "confidence": 62, "isGroundTruth": false }
+        ]
+      },
+      {
+        "id": "EV-003",
+        "caseId": "CASE-101",
+        "type": "SENSOR",
+        "sourceName": "OBD-II CAN Telemetry Log (Vehicle A)",
+        "timestampRecorded": "2026-10-28T14:02:11Z",
+        "fileUrl": "/sample_evidence/telemetry_log_a.csv",
+        "extractedObservations": [
+          { "timestampSec": 0.5, "observation": "Throttle position at 28%, cruising speed 48.1 km/h.", "confidence": 99, "isGroundTruth": true },
+          { "timestampSec": 2.1, "observation": "Brake pedal engaged; brake pressure rose to 85 bar within 150ms.", "confidence": 99, "isGroundTruth": true },
+          { "timestampSec": 2.8, "observation": "Deceleration peak -0.82G; yaw rate spike 44 deg/sec.", "confidence": 99, "isGroundTruth": true }
+        ]
+      },
+      {
+        "id": "EV-004",
+        "caseId": "CASE-101",
+        "type": "WITNESS_TEXT",
+        "sourceName": "Vehicle B Driver Post-Crash Statement",
+        "timestampRecorded": "2026-10-28T14:22:00Z",
+        "transcriptOrExtractedText": "I entered the intersection on a yellow light that had just turned. The other vehicle came out of nowhere at extreme speed.",
+        "extractedObservations": [
+          { "timestampSec": 1.8, "observation": "Driver B acknowledges entering on late yellow light.", "confidence": 85, "isGroundTruth": false }
+        ]
+      }
+    ],
+    "contradictions": [
+      {
+        "id": "CONT-001",
+        "timestampSec": 1.4,
+        "severity": "HIGH",
+        "topic": "Traffic Signal Indication for Vehicle A",
+        "claimA": {
+          "sourceId": "EV-002",
+          "sourceType": "AUDIO_WITNESS",
+          "statement": "Pedestrian claims Vehicle A blew through a red light at high speed.",
+          "credibility": 62
+        },
+        "claimB": {
+          "sourceId": "EV-001",
+          "sourceType": "VIDEO_DASHCAM",
+          "statement": "Dashcam Frame #142 shows East-West traffic signal illuminated solid green.",
+          "credibility": 98
+        },
+        "systemResolution": "Video optical ground truth directly contradicts pedestrian recollection. Discrepancy classified as high-confidence witness memory distortion."
+      },
+      {
+        "id": "CONT-002",
+        "timestampSec": 2.1,
+        "severity": "MEDIUM",
+        "topic": "Pre-Impact Braking Action",
+        "claimA": {
+          "sourceId": "EV-002",
+          "sourceType": "AUDIO_WITNESS",
+          "statement": "Pedestrian stated Vehicle A made no attempt to stop.",
+          "credibility": 55
+        },
+        "claimB": {
+          "sourceId": "EV-003",
+          "sourceType": "SENSOR_OBD",
+          "statement": "OBD-II logged emergency brake activation 0.7s before impact with 85 bar line pressure.",
+          "credibility": 99
+        },
+        "systemResolution": "Sensor ground truth confirms active emergency braking prior to impact."
+      }
+    ],
+    "timelineEvents": [
+      {
+        "id": "TL-001",
+        "timeSec": 0.0,
+        "isoTime": "14:02:08.6",
+        "title": "Westbound Approach",
+        "description": "Vehicle A cruising westbound at steady 48 km/h.",
+        "category": "MOVEMENT",
+        "classification": "RAW_OBSERVATION",
+        "confidenceScore": 99,
+        "evidenceReferences": ["EV-001", "EV-003"],
+        "hasContradiction": false
+      },
+      {
+        "id": "TL-002",
+        "timeSec": 1.4,
+        "isoTime": "14:02:10.0",
+        "title": "Green Signal Verified",
+        "description": "Vehicle A passes crosswalk beneath solid green traffic light.",
+        "category": "SIGNAL_CHANGE",
+        "classification": "RAW_OBSERVATION",
+        "confidenceScore": 98,
+        "evidenceReferences": ["EV-001"],
+        "hasContradiction": true,
+        "contradictionId": "CONT-001"
+      },
+      {
+        "id": "TL-003",
+        "timeSec": 2.1,
+        "isoTime": "14:02:10.7",
+        "title": "Emergency Braking Triggered",
+        "description": "Vehicle A driver detects Vehicle B entering path; emergency brake applied at 85 bar.",
+        "category": "BRAKE_ACTION",
+        "classification": "RAW_OBSERVATION",
+        "confidenceScore": 99,
+        "evidenceReferences": ["EV-003"],
+        "hasContradiction": true,
+        "contradictionId": "CONT-002"
+      },
+      {
+        "id": "TL-004",
+        "timeSec": 2.8,
+        "isoTime": "14:02:11.4",
+        "title": "T-Bone Impact",
+        "description": "Front bumper of Vehicle A strikes left passenger door of Vehicle B at intersection center.",
+        "category": "IMPACT",
+        "classification": "RAW_OBSERVATION",
+        "confidenceScore": 99,
+        "evidenceReferences": ["EV-001", "EV-003"],
+        "hasContradiction": false
+      },
+      {
+        "id": "TL-005",
+        "timeSec": 3.6,
+        "isoTime": "14:02:12.2",
+        "title": "Vehicle Rest & Post-Collision Rotation",
+        "description": "Vehicles rotate 34 degrees and slide to rest in northwest quadrant.",
+        "category": "POST_COLLISION",
+        "classification": "INFERRED_HYPOTHESIS",
+        "confidenceScore": 88,
+        "evidenceReferences": ["EV-001"],
+        "hasContradiction": false
+      }
+    ],
+    "trajectory": [
+      { "timeSec": 0.0, "vehicleA": { "x": -25.0, "z": 1.75, "speedKmh": 48.0, "headingDeg": 90, "braking": false }, "vehicleB": { "x": 1.75, "z": -25.0, "speedKmh": 36.0, "headingDeg": 180, "braking": false }, "trafficLight": "GREEN", "isImpactPoint": false },
+      { "timeSec": 0.5, "vehicleA": { "x": -18.3, "z": 1.75, "speedKmh": 48.0, "headingDeg": 90, "braking": false }, "vehicleB": { "x": 1.75, "z": -20.0, "speedKmh": 36.0, "headingDeg": 180, "braking": false }, "trafficLight": "GREEN", "isImpactPoint": false },
+      { "timeSec": 1.0, "vehicleA": { "x": -11.7, "z": 1.75, "speedKmh": 48.0, "headingDeg": 90, "braking": false }, "vehicleB": { "x": 1.75, "z": -15.0, "speedKmh": 36.0, "headingDeg": 180, "braking": false }, "trafficLight": "GREEN", "isImpactPoint": false },
+      { "timeSec": 1.5, "vehicleA": { "x": -6.0, "z": 1.75, "speedKmh": 47.0, "headingDeg": 90, "braking": false }, "vehicleB": { "x": 1.75, "z": -10.0, "speedKmh": 36.0, "headingDeg": 180, "braking": false }, "trafficLight": "YELLOW", "isImpactPoint": false },
+      { "timeSec": 2.0, "vehicleA": { "x": -2.0, "z": 1.75, "speedKmh": 41.0, "headingDeg": 90, "braking": true }, "vehicleB": { "x": 1.75, "z": -5.0, "speedKmh": 35.0, "headingDeg": 180, "braking": false }, "trafficLight": "RED", "isImpactPoint": false },
+      { "timeSec": 2.5, "vehicleA": { "x": 0.5, "z": 1.75, "speedKmh": 32.0, "headingDeg": 90, "braking": true }, "vehicleB": { "x": 1.75, "z": -1.2, "speedKmh": 34.0, "headingDeg": 180, "braking": false }, "trafficLight": "RED", "isImpactPoint": false },
+      { "timeSec": 2.8, "vehicleA": { "x": 1.5, "z": 1.75, "speedKmh": 25.0, "headingDeg": 85, "braking": true }, "vehicleB": { "x": 1.75, "z": 0.5, "speedKmh": 30.0, "headingDeg": 175, "braking": false }, "trafficLight": "RED", "isImpactPoint": true },
+      { "timeSec": 3.2, "vehicleA": { "x": 2.8, "z": 2.2, "speedKmh": 12.0, "headingDeg": 75, "braking": true }, "vehicleB": { "x": 3.0, "z": 2.0, "speedKmh": 15.0, "headingDeg": 150, "braking": true }, "trafficLight": "RED", "isImpactPoint": false },
+      { "timeSec": 4.0, "vehicleA": { "x": 3.5, "z": 2.6, "speedKmh": 0.0, "headingDeg": 70, "braking": true }, "vehicleB": { "x": 4.2, "z": 3.5, "speedKmh": 0.0, "headingDeg": 140, "braking": true }, "trafficLight": "RED", "isImpactPoint": false }
+    ]
+  },
+  {
+    "id": "CASE-102",
+    "name": "Highway 101 Northbound Multi-Vehicle Rear-End",
+    "title": "Highway 101 Northbound Multi-Vehicle Rear-End",
+    "date": "Oct 29, 2026 - 09:15 UTC",
+    "address": "Interstate 101, Mile Marker 42.4",
+    "location": "Interstate 101, Mile Marker 42.4",
+    "officer": "Sgt. Sarah Jenkins",
+    "department": "Highway Patrol Forensic Division",
+    "status": "Verified Consistent",
+    "overallConfidence": 88,
+    "confidence": 88,
+    "summary": {
+      "executive": "Multi-vehicle rear-end sequence on Interstate 101 northbound at mile marker 42.4. Telemetry and rear dashcam recordings confirm Lead Vehicle C executed a sudden emergency stop due to lost cargo. Following Vehicle D maintained compliant 2.2-second following distance and stopped safely. Vehicle E failed to react within safe stopping distance (tailgating at 0.8s gap) causing high-speed secondary collision.",
+      "observations": [
+        "Lead vehicle brake lights activated at 09:15:02.1 (EV-201).",
+        "Vehicle D deceleration recorded at -0.74G, coming to full stop with 1.8m safety margin (EV-202).",
+        "Vehicle E telemetry confirms zero brake input until 0.3s prior to impact (EV-203)."
+      ],
+      "inferences": [
+        "Vehicle E driver distracted during critical 1.8s reaction window (Confidence: 92%).",
+        "Estimated closing speed of Vehicle E at impact: 64 km/h (Confidence: 89%)."
+      ],
+      "providerUsed": "Groq (llama-3.3-70b-versatile)"
+    },
+    "evidenceCounts": { "video": 2, "audio": 1, "sensor": 2, "text": 0 },
+    "records": [],
+    "contradictions": [],
+    "timelineEvents": [],
+    "trajectory": []
+  },
+  {
+    "id": "CASE-103",
+    "name": "Pine & Elm Boulevard Pedestrian Impact Study",
+    "title": "Pine & Elm Boulevard Pedestrian Impact Study",
+    "date": "Oct 30, 2026 - 18:40 UTC",
+    "address": "Crosswalk at Pine St & Elm Blvd",
+    "location": "Crosswalk at Pine St & Elm Blvd",
+    "officer": "Insp. Dev Patel",
+    "department": "Urban Transit Safety Unit",
+    "status": "In Review",
+    "overallConfidence": 76,
+    "confidence": 76,
+    "summary": {
+      "executive": "Low-light crosswalk collision investigation. Preliminary analysis of municipal CCTV indicates pedestrian entered crosswalk during flashing amber countdown. Vehicle velocity estimated at 38 km/h. Headlight illumination envelope and ambient street lighting conditions currently under radiometric simulation.",
+      "observations": [
+        "Municipal CCTV recorded pedestrian stepping off curb at 18:40:12.4 (EV-301).",
+        "Streetlight cluster #4 operational at 40% luminous output (EV-302)."
+      ],
+      "inferences": [
+        "Pedestrian visibility contrast against asphalt estimated at 0.32 under current lighting (Confidence: 74%)."
+      ],
+      "providerUsed": "Groq (llama-3.3-70b-versatile)"
+    },
+    "evidenceCounts": { "video": 1, "audio": 2, "sensor": 0, "text": 1 },
+    "records": [],
+    "contradictions": [],
+    "timelineEvents": [],
+    "trajectory": []
+  }
+]
+
